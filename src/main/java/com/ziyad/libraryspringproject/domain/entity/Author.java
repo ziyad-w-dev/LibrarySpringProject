@@ -1,9 +1,17 @@
 package com.ziyad.libraryspringproject.domain.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
-@Table(name ="author")
+@Table(name ="authors")
 public class Author {
 
     @Id
@@ -11,11 +19,8 @@ public class Author {
     private Long id;
 
     @Column(nullable = false)
-    private String authorName;
+    private String name;
 
-    @Column
-    @OneToOne
-    private User userId;
 
 
 }

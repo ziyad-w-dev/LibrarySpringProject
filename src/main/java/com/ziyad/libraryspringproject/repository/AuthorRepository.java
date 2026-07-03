@@ -1,0 +1,11 @@
+package com.ziyad.libraryspringproject.repository;
+
+import com.ziyad.libraryspringproject.domain.entity.Author;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface AuthorRepository extends CrudRepository<Author, Long> {
+
+
+}
