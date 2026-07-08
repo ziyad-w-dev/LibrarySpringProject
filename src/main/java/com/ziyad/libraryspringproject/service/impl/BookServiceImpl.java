@@ -1,6 +1,7 @@
 package com.ziyad.libraryspringproject.service.impl;
 
 import com.ziyad.libraryspringproject.domain.dto.CreateBookRequest;
+import com.ziyad.libraryspringproject.domain.dto.CreateBookResponse;
 import com.ziyad.libraryspringproject.domain.entity.Author;
 import com.ziyad.libraryspringproject.domain.entity.Book;
 import com.ziyad.libraryspringproject.mapper.BookMapper;
@@ -24,12 +25,13 @@ public class BookServiceImpl implements BookService {
 
 
     @Override
-    public Long createBook(CreateBookRequest createBookRequest){
+    public CreateBookResponse createBook(CreateBookRequest createBookRequest){
         Author author = authorRepository.findById(createBookRequest.getAuthorId())
                 .orElseThrow();
         Book bookEntity = bookMapper.toEntity(createBookRequest, author);
         Book savedBook =  bookRepository.save(bookEntity);
-        return savedBook.getId();
+        CreateBookResponse bookResponse = bookMapper.toDto(savedBook);
+        return bookResponse;
     }
 
     @Override

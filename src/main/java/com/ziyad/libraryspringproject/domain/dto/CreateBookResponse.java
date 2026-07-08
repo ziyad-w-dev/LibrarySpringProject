@@ -1,13 +1,15 @@
 package com.ziyad.libraryspringproject.domain.dto;
 
 
-import com.ziyad.libraryspringproject.domain.entity.Author;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Setter
+
+@Builder
 @Getter
+@AllArgsConstructor
 @NoArgsConstructor
 public class CreateBookResponse {
 
@@ -18,6 +20,6 @@ public class CreateBookResponse {
 
     private int pages;
 
-    private Author author;
+    private String authorName;
 
 }
