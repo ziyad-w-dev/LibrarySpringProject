@@ -4,6 +4,8 @@ import com.ziyad.libraryspringproject.domain.dto.CreateBookRequest;
 import com.ziyad.libraryspringproject.domain.dto.CreateBookResponse;
 import com.ziyad.libraryspringproject.domain.entity.Author;
 import com.ziyad.libraryspringproject.domain.entity.Book;
+import com.ziyad.libraryspringproject.exceptions.AuthorNotFoundException;
+import com.ziyad.libraryspringproject.exceptions.BookNotFoundException;
 import com.ziyad.libraryspringproject.mapper.BookMapper;
 import com.ziyad.libraryspringproject.repository.AuthorRepository;
 import com.ziyad.libraryspringproject.repository.BookRepository;
@@ -27,7 +29,7 @@ public class BookServiceImpl implements BookService {
     @Override
     public CreateBookResponse createBook(CreateBookRequest createBookRequest){
         Author author = authorRepository.findById(createBookRequest.getAuthorId())
-                .orElseThrow();
+                .orElseThrow(() -> new AuthorNotFoundException("author not found with id:"+ createBookRequest.getAuthorId()));
         Book bookEntity = bookMapper.toEntity(createBookRequest, author);
         Book savedBook =  bookRepository.save(bookEntity);
         CreateBookResponse bookResponse = bookMapper.toDto(savedBook);
@@ -37,7 +39,7 @@ public class BookServiceImpl implements BookService {
     @Override
     public Book findByBookId(Long id){
         return bookRepository.findById(id).
-                orElseThrow();
+                orElseThrow(() -> new BookNotFoundException("Book Not Found With id: " + id ));
     }
 
     @Override
