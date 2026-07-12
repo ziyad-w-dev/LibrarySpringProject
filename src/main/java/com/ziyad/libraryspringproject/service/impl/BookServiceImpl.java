@@ -1,7 +1,8 @@
 package com.ziyad.libraryspringproject.service.impl;
 
-import com.ziyad.libraryspringproject.domain.dto.CreateBookRequest;
-import com.ziyad.libraryspringproject.domain.dto.CreateBookResponse;
+import com.ziyad.libraryspringproject.domain.dto.BookRequest;
+import com.ziyad.libraryspringproject.domain.dto.BookResponse;
+import com.ziyad.libraryspringproject.domain.dto.PartialUpdateBookRequest;
 import com.ziyad.libraryspringproject.domain.entity.Author;
 import com.ziyad.libraryspringproject.domain.entity.Book;
 import com.ziyad.libraryspringproject.exceptions.AuthorNotFoundException;
@@ -27,12 +28,12 @@ public class BookServiceImpl implements BookService {
 
 
     @Override
-    public CreateBookResponse createBook(CreateBookRequest createBookRequest){
-        Author author = authorRepository.findById(createBookRequest.getAuthorId())
-                .orElseThrow(() -> new AuthorNotFoundException("author not found with id:"+ createBookRequest.getAuthorId()));
-        Book bookEntity = bookMapper.toEntity(createBookRequest, author);
+    public BookResponse createBook(BookRequest bookRequest){
+        Author author = authorRepository.findById(bookRequest.getAuthorId())
+                .orElseThrow(() -> new AuthorNotFoundException("author not found with id:"+ bookRequest.getAuthorId()));
+        Book bookEntity = bookMapper.toEntity(bookRequest, author);
         Book savedBook =  bookRepository.save(bookEntity);
-        CreateBookResponse bookResponse = bookMapper.toDto(savedBook);
+        BookResponse bookResponse = bookMapper.toDto(savedBook);
         return bookResponse;
     }
 
@@ -52,4 +53,45 @@ public class BookServiceImpl implements BookService {
         return bookRepository.findByPagesBetween(from, to);
     }
 
+    @Override
+    public BookResponse partialUpdateBook (Long id,PartialUpdateBookRequest request) {
+        Book realBook  = bookRepository.findById(id)
+                .orElseThrow(() -> new BookNotFoundException("Book not found with id: " + id));
+        if(request.getName() != null){
+            realBook.setName(request.getName());
+        }
+        if(request.getPages() != null){
+            realBook.setPages(request.getPages());
+        }
+        if (request.getAuthorId() != null){
+            Author author = authorRepository.findById(request.getAuthorId())
+                    .orElseThrow(() -> new AuthorNotFoundException("Author not Found with id: " + request.getAuthorId()));
+            realBook.setAuthor(author);
+        }
+        Book savedBook = bookRepository.save(realBook);
+        BookResponse bookResponse = bookMapper.toDto(savedBook);
+        return bookResponse;
+    }
+
+    @Override
+    public BookResponse fullBookUpdate(Long id, BookRequest bookRequest){
+        bookRepository.findById(id)
+                .orElseThrow(() -> new BookNotFoundException("Book Not Found with id: "+ id));
+        Author author = authorRepository.findById(bookRequest.getAuthorId())
+                .orElseThrow(() -> new AuthorNotFoundException("Author Not Found with id: "+ bookRequest.getAuthorId()));
+        Book realBook = bookMapper.toEntity(bookRequest, author);
+        realBook.setId(id);
+        bookRepository.save(realBook);
+        BookResponse bookResponse = bookMapper.toDto(realBook);
+
+        return bookResponse;
+    }
+
+    @Override
+    public void deleteBook(Long id){
+        if(!bookRepository.existsById(id)) {
+            throw new BookNotFoundException("Book Not Found With id: " + id);
+        }
+        bookRepository.deleteById(id);
+    }
 }

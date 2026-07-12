@@ -4,14 +4,14 @@ package com.ziyad.libraryspringproject.domain.dto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
+@Builder
 @Getter
 @Setter
 @NoArgsConstructor
-public class CreateBookRequest {
+@AllArgsConstructor
+public class BookRequest {
 
     @NotBlank
     private String name;

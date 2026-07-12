@@ -1,7 +1,7 @@
 package com.ziyad.libraryspringproject.mapper;
 
-import com.ziyad.libraryspringproject.domain.dto.CreateBookRequest;
-import com.ziyad.libraryspringproject.domain.dto.CreateBookResponse;
+import com.ziyad.libraryspringproject.domain.dto.BookRequest;
+import com.ziyad.libraryspringproject.domain.dto.BookResponse;
 import com.ziyad.libraryspringproject.domain.entity.Author;
 import com.ziyad.libraryspringproject.domain.entity.Book;
 import org.springframework.stereotype.Component;
@@ -9,16 +9,16 @@ import org.springframework.stereotype.Component;
 @Component
 public class BookMapper {
 
-    public Book toEntity(CreateBookRequest createBookRequest, Author author){
+    public Book toEntity(BookRequest bookRequest, Author author){
         Book bookEntity = new Book();
-        bookEntity.setName(createBookRequest.getName());
-        bookEntity.setPages(createBookRequest.getPages());
+        bookEntity.setName(bookRequest.getName());
+        bookEntity.setPages(bookRequest.getPages());
         bookEntity.setAuthor(author);
         return bookEntity;
     }
 
-    public CreateBookResponse toDto(Book book){
-           CreateBookResponse bookResponse = CreateBookResponse.builder()
+    public BookResponse toDto(Book book){
+           BookResponse bookResponse = BookResponse.builder()
                    .name(book.getName())
                    .id(book.getId())
                    .pages(book.getPages())
@@ -27,4 +27,5 @@ public class BookMapper {
 
            return bookResponse;
     }
+
 }
