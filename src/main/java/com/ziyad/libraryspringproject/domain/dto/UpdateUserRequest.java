@@ -1,6 +1,5 @@
 package com.ziyad.libraryspringproject.domain.dto;
 
-import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 @Builder
@@ -8,7 +7,7 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class PartialUpdateUserRequest {
+public class UpdateUserRequest {
 
 
     private String email;

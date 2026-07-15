@@ -8,7 +8,7 @@ public interface AuthorService{
 
     AuthorResponse createAuthor(AuthorRequest request);
 
-    Author findAuthorById(Long id);
+    AuthorResponse findAuthorById(Long id);
 
     AuthorResponse AuthorUpdate(Long id, AuthorRequest request);
 

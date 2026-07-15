@@ -1,28 +1,21 @@
 package com.ziyad.libraryspringproject.domain.dto;
 
-import com.ziyad.libraryspringproject.domain.entity.Role;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Builder
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserRequest {
+public class FullUpdateUserRequest {
 
     @NotBlank
     private String email;
 
     @NotBlank
     private String userName;
-
-    @NotBlank
-    private String password;
-
-//    @NotNull
-//    private Role role;
-
 
 }

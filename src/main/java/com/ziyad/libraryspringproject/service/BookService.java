@@ -14,7 +14,7 @@ public interface BookService {
 
     BookResponse createBook(BookRequest bookRequest);
 
-    Book findByBookId(Long id);
+    BookResponse findByBookId(Long id);
 
     List<Book> findByBookNameContaining(String contain);
 

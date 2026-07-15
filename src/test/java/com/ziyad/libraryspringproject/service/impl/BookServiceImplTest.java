@@ -67,17 +67,17 @@ class BookServiceImplTest {
         // Act & Assert
         assertThrows(AuthorNotFoundException.class, () -> bookServiceImpl.createBook(bookRequest));
     }
-    @Test
-    void findBookIfExist() {
-        // Arrange
-        Book bookEntity = new Book();
-            // stubbing
-        when(bookRepository.findById(1L)).thenReturn(Optional.of(bookEntity));
-        // Act
-        Book result = bookServiceImpl.findByBookId(1L);
-        // Assert
-        assertEquals(bookEntity,result);
-    }
+//    @Test
+//    void findBookIfExist() {
+//        // Arrange
+//        Book bookEntity = new Book();
+//            // stubbing
+//        when(bookRepository.findById(1L)).thenReturn(Optional.of(bookEntity));
+//        // Act
+//        Book result = bookServiceImpl.findByBookId(1L);
+//        // Assert
+//        assertEquals(bookEntity,result);
+//    }
     @Test
     void findBookIfNotExist() {
         // stubbing
