@@ -16,9 +16,9 @@ public interface BookService {
 
     BookResponse findByBookId(Long id);
 
-    List<Book> findByBookNameContaining(String contain);
+    List<BookResponse> findByBookNameContaining(String contain);
 
-    List<Book> findByBookPagesBetween(int from, int to);
+    List<BookResponse> findByBookPagesBetween(int from, int to);
 
     BookResponse partialUpdateBook (Long id, PartialUpdateBookRequest request);
 

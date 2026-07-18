@@ -42,20 +42,22 @@ class BookServiceImplTest {
     void createBookIfAuthorExist() {
         // Arrange
         Author author = new Author();
-        author.setId(1L); author.setName("author");
         BookRequest fake = BookRequest.builder()
                 .name("The Book") .pages(100) .authorId(1L) .build();
-        BookResponse createBookResponse = BookResponse.builder()
+        Book book = new Book();
+        BookResponse bookResponse = BookResponse.builder()
                 .id(1L).name("The Book").pages(100).authorName("author").build();
 
+        when(bookRepository.save(book)).thenReturn(book);
         when(authorRepository.findById(1L)).thenReturn(Optional.of(author));
-        when(bookMapper.toDto(any())).thenReturn(createBookResponse);
+        when(bookMapper.toDto(book)).thenReturn(bookResponse);
+        when(bookMapper.toEntity(fake,author)).thenReturn(book);
 
         // Act
         BookResponse result = bookServiceImpl.createBook(fake);
 
         // Assert
-        assertEquals(createBookResponse, result);
+        assertEquals(bookResponse, result);
     }
     @Test
     void createBookIfAuthorDontExist(){
@@ -67,17 +69,19 @@ class BookServiceImplTest {
         // Act & Assert
         assertThrows(AuthorNotFoundException.class, () -> bookServiceImpl.createBook(bookRequest));
     }
-//    @Test
-//    void findBookIfExist() {
-//        // Arrange
-//        Book bookEntity = new Book();
-//            // stubbing
-//        when(bookRepository.findById(1L)).thenReturn(Optional.of(bookEntity));
-//        // Act
-//        Book result = bookServiceImpl.findByBookId(1L);
-//        // Assert
-//        assertEquals(bookEntity,result);
-//    }
+    @Test
+    void findBookIfExist() {
+        // Arrange
+        Book bookEntity = new Book();
+        BookResponse bookResponse = new BookResponse();
+            // stubbing
+        when(bookRepository.findById(1L)).thenReturn(Optional.of(bookEntity));
+        when(bookMapper.toDto(any())).thenReturn(bookResponse);
+        // Act
+        BookResponse result = bookServiceImpl.findByBookId(1L);
+        // Assert
+        assertEquals(bookResponse,result);
+    }
     @Test
     void findBookIfNotExist() {
         // stubbing

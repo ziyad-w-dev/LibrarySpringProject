@@ -4,15 +4,18 @@ import com.ziyad.libraryspringproject.domain.dto.UpdateUserRequest;
 import com.ziyad.libraryspringproject.domain.dto.UserRequest;
 import com.ziyad.libraryspringproject.domain.dto.UserResponse;
 import com.ziyad.libraryspringproject.domain.entity.User;
+import com.ziyad.libraryspringproject.exceptions.AuthorHasBooksException;
 import com.ziyad.libraryspringproject.exceptions.EmailAlreadyExistsException;
 import com.ziyad.libraryspringproject.exceptions.UserNameAlreadyExistsException;
 import com.ziyad.libraryspringproject.exceptions.UserNotFoundException;
 import com.ziyad.libraryspringproject.mapper.UserMapper;
+import com.ziyad.libraryspringproject.repository.BookRepository;
 import com.ziyad.libraryspringproject.repository.UserRepository;
 import com.ziyad.libraryspringproject.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
@@ -23,6 +26,7 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
 
 
+    @Transactional
     @Override
     public UserResponse createUser(UserRequest userRequest){
         if(userRepository.existsByEmail(userRequest.getEmail())){
@@ -40,6 +44,7 @@ public class UserServiceImpl implements UserService {
 
     }
 
+    @Transactional(readOnly = true)
     @Override
     public UserResponse findUserById(Long id){
         User user =  userRepository.findById(id)
@@ -49,6 +54,7 @@ public class UserServiceImpl implements UserService {
         return userResponse;
     }
 
+    @Transactional
     @Override
     public UserResponse userUpdate(Long id, UpdateUserRequest request){
         User realUser = userRepository.findById(id)
@@ -71,13 +77,13 @@ public class UserServiceImpl implements UserService {
         return userResponse;
     }
 
+    @Transactional
     @Override
     public void deleteUser(Long id){
         if(!userRepository.existsById(id)){
             throw new UserNotFoundException("User Not Found With id:" +id);
         }
         userRepository.deleteById(id);
-
     }
 
 }

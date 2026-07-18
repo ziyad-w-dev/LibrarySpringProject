@@ -21,8 +21,8 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
     }
 
-    @ExceptionHandler(ResourceAlreadyExistsException.class)
-    public ResponseEntity<ErrorResponse> resourceAlreadyExistsExceptionHandler(ResourceAlreadyExistsException ex){
+    @ExceptionHandler(ResourceConflictException .class)
+    public ResponseEntity<ErrorResponse> resourceAlreadyExistsExceptionHandler(ResourceConflictException ex){
         ErrorResponse errorResponse = ErrorResponse.builder()
                 .message(ex.getMessage())
                 .status(HttpStatus.CONFLICT.value())

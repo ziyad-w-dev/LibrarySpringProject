@@ -11,5 +11,6 @@ public interface BookRepository extends JpaRepository<Book, Long> {
 
     List<Book> findByPagesBetween(int from, int to);
     List<Book> findByNameContaining(String contain);
+    boolean existsByAuthorId(Long authorId);
 
 }

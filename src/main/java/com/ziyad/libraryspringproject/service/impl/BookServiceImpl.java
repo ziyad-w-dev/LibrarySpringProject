@@ -13,6 +13,7 @@ import com.ziyad.libraryspringproject.repository.BookRepository;
 import com.ziyad.libraryspringproject.service.BookService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -27,6 +28,7 @@ public class BookServiceImpl implements BookService {
     private final BookMapper bookMapper;
 
 
+    @Transactional
     @Override
     public BookResponse createBook(BookRequest bookRequest){
         Author author = authorRepository.findById(bookRequest.getAuthorId())
@@ -37,6 +39,7 @@ public class BookServiceImpl implements BookService {
         return bookResponse;
     }
 
+    @Transactional(readOnly = true)
     @Override
     public BookResponse findByBookId(Long id){
         Book book = bookRepository.findById(id).
@@ -46,16 +49,26 @@ public class BookServiceImpl implements BookService {
         return bookResponse;
     }
 
+    @Transactional(readOnly = true)
     @Override
-    public List<Book> findByBookNameContaining(String contain){
-        return bookRepository.findByNameContaining(contain);
+    public List<BookResponse> findByBookNameContaining(String contain){
+        List<BookResponse> bookList = bookRepository.findByNameContaining(contain).stream()
+                .map(bookMapper::toDto)
+                .toList();
+        return bookList;
     }
 
+    @Transactional(readOnly = true)
     @Override
-    public List<Book> findByBookPagesBetween(int from, int to){
-        return bookRepository.findByPagesBetween(from, to);
+    public List<BookResponse> findByBookPagesBetween(int from, int to){
+        List<BookResponse> bookList = bookRepository.findByPagesBetween(from, to).stream()
+                .map(bookMapper::toDto)
+                .toList();
+
+        return bookList;
     }
 
+    @Transactional
     @Override
     public BookResponse partialUpdateBook (Long id,PartialUpdateBookRequest request) {
         Book realBook  = bookRepository.findById(id)
@@ -76,6 +89,7 @@ public class BookServiceImpl implements BookService {
         return bookResponse;
     }
 
+    @Transactional
     @Override
     public BookResponse fullBookUpdate(Long id, BookRequest bookRequest){
         bookRepository.findById(id)
@@ -84,12 +98,13 @@ public class BookServiceImpl implements BookService {
                 .orElseThrow(() -> new AuthorNotFoundException("Author Not Found with id: "+ bookRequest.getAuthorId()));
         Book realBook = bookMapper.toEntity(bookRequest, author);
         realBook.setId(id);
-        bookRepository.save(realBook);
-        BookResponse bookResponse = bookMapper.toDto(realBook);
+        Book savedBook = bookRepository.save(realBook);
+        BookResponse bookResponse = bookMapper.toDto(savedBook);
 
         return bookResponse;
     }
 
+    @Transactional
     @Override
     public void deleteBook(Long id){
         if(!bookRepository.existsById(id)) {
