@@ -2,7 +2,6 @@ package com.ziyad.libraryspringproject.service;
 
 import com.ziyad.libraryspringproject.domain.dto.AuthorRequest;
 import com.ziyad.libraryspringproject.domain.dto.AuthorResponse;
-import com.ziyad.libraryspringproject.domain.entity.Author;
 
 public interface AuthorService{
 

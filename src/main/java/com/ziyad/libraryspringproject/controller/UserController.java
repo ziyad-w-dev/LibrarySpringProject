@@ -35,9 +35,16 @@ public class UserController {
     public ResponseEntity<UserResponse> updateUser(
             @PathVariable Long id,
             @RequestBody UpdateUserRequest request){
-        UserResponse response = userService.userUpdate(id,request);
+        UserResponse response = userService.updateUser(id,request);
 
         return ResponseEntity.ok(response);
+    }
+
+    @PatchMapping("/{id}/role")
+    public ResponseEntity<Void> promoteToAdmin(@PathVariable Long id){
+        userService.promoteToAdmin(id);
+
+        return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("{id}")

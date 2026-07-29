@@ -3,14 +3,18 @@ package com.ziyad.libraryspringproject.service.impl;
 import com.ziyad.libraryspringproject.domain.dto.UpdateUserRequest;
 import com.ziyad.libraryspringproject.domain.dto.UserRequest;
 import com.ziyad.libraryspringproject.domain.dto.UserResponse;
+import com.ziyad.libraryspringproject.domain.entity.Role;
 import com.ziyad.libraryspringproject.domain.entity.User;
 import com.ziyad.libraryspringproject.exceptions.EmailAlreadyExistsException;
+import com.ziyad.libraryspringproject.exceptions.UnauthorizedActionException;
 import com.ziyad.libraryspringproject.exceptions.UserNameAlreadyExistsException;
 import com.ziyad.libraryspringproject.exceptions.UserNotFoundException;
 import com.ziyad.libraryspringproject.mapper.UserMapper;
 import com.ziyad.libraryspringproject.repository.UserRepository;
+import com.ziyad.libraryspringproject.security.CustomUserDetails;
 import com.ziyad.libraryspringproject.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -54,7 +58,13 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public UserResponse userUpdate(Long id, UpdateUserRequest request){
+    public UserResponse updateUser(Long id, UpdateUserRequest request){
+        CustomUserDetails principal  = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Long loggedInId = principal.getId();
+        if(!loggedInId.equals(id)){
+            throw new UnauthorizedActionException("You can only update your Account!");
+        }
+
         User realUser = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("User Not Found With id: " +id));
         if(request.getEmail() != null){
@@ -82,6 +92,15 @@ public class UserServiceImpl implements UserService {
             throw new UserNotFoundException("User Not Found With id:" +id);
         }
         userRepository.deleteById(id);
+    }
+
+    @Transactional
+    @Override
+    public void promoteToAdmin(Long id){
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("User Not found with id: "+ id));
+        user.setRole(Role.ADMIN);
+        userRepository.save(user);
     }
 
 }
