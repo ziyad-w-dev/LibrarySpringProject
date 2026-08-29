@@ -34,7 +34,7 @@ public class UserServiceImpl implements UserService {
         if(userRepository.existsByEmail(userRequest.getEmail())){
             throw new EmailAlreadyExistsException("Email Already Exists!");
         }
-        if(userRepository.existsByUserName(userRequest.getUserName())){
+        if(userRepository.existsByUserName(userRequest.getUsername())){
             throw new UserNameAlreadyExistsException("UserName Already Exists!");
         }
         String hashedPassword = passwordEncoder.encode(userRequest.getPassword());
