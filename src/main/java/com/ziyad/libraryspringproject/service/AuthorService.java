@@ -9,7 +9,7 @@ public interface AuthorService{
 
     AuthorResponse findAuthorById(Long id);
 
-    AuthorResponse AuthorUpdate(Long id, AuthorRequest request);
+    AuthorResponse updateAuthor(Long id, AuthorRequest request);
 
     void deleteAuthor(Long id);
 }

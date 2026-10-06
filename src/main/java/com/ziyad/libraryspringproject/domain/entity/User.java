@@ -30,6 +30,6 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Role role = Role.USER; // TODO V2: admin promotion + first-admin seeding
+    private Role role = Role.USER;
 
 }

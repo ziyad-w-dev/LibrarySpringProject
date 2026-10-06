@@ -1,5 +1,6 @@
 package com.ziyad.libraryspringproject.domain.dto;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
@@ -11,6 +12,7 @@ import lombok.*;
 public class UserRequest {
 
     @NotBlank
+    @Email
     private String email;
 
     @NotBlank
@@ -19,8 +21,6 @@ public class UserRequest {
     @NotBlank
     private String password;
 
-//    @NotNull
-//    private Role role;
 
 
 }

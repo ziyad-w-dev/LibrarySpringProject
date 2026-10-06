@@ -18,37 +18,37 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping
-    public ResponseEntity<UserResponse> createUser(@Valid @RequestBody UserRequest request){
+    public ResponseEntity<UserResponse> createUser(@Valid @RequestBody UserRequest request) {
         UserResponse response = userService.createUser(request);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @GetMapping("{id}")
-    public ResponseEntity<UserResponse> getUser(@PathVariable Long id){
+    @GetMapping("/{id}")
+    public ResponseEntity<UserResponse> getUser(@PathVariable Long id) {
         UserResponse response = userService.findUserById(id);
 
         return ResponseEntity.ok(response);
     }
 
-    @PatchMapping("{id}")
+    @PatchMapping("/{id}")
     public ResponseEntity<UserResponse> updateUser(
             @PathVariable Long id,
-            @RequestBody UpdateUserRequest request){
-        UserResponse response = userService.updateUser(id,request);
+            @Valid @RequestBody UpdateUserRequest request) {
+        UserResponse response = userService.updateUser(id, request);
 
         return ResponseEntity.ok(response);
     }
 
     @PatchMapping("/{id}/role")
-    public ResponseEntity<Void> promoteToAdmin(@PathVariable Long id){
+    public ResponseEntity<Void> promoteToAdmin(@PathVariable Long id) {
         userService.promoteToAdmin(id);
 
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long id){
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
 
         return ResponseEntity.noContent().build();
