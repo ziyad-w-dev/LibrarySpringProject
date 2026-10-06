@@ -1,6 +1,5 @@
 package com.ziyad.libraryspringproject.domain.dto;
 
-import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 @Builder
@@ -8,12 +7,11 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class LoginRequest {
+public class AuthResponse {
 
-    @NotBlank
+    private String token;
+    private Long id;
     private String username;
-
-    @NotBlank
-    private String password;
+    private String role;
 
 }
