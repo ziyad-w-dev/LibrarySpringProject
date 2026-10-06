@@ -22,8 +22,8 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
     }
 
-    @ExceptionHandler(ResourceConflictException .class)
-    public ResponseEntity<ErrorResponse> resourceAlreadyExistsExceptionHandler(ResourceConflictException ex){
+    @ExceptionHandler(ResourceConflictException.class)
+    public ResponseEntity<ErrorResponse> resourceConflictExceptionHandler(ResourceConflictException ex){
         ErrorResponse errorResponse = ErrorResponse.builder()
                 .message(ex.getMessage())
                 .status(HttpStatus.CONFLICT.value())
@@ -43,7 +43,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(UnauthorizedActionException.class)
-    public ResponseEntity<ErrorResponse> UnauthorizedActionException(UnauthorizedActionException ex){
+    public ResponseEntity<ErrorResponse> unauthorizedActionExceptionHandler(UnauthorizedActionException ex){
         ErrorResponse errorResponse = ErrorResponse.builder()
                 .message(ex.getMessage())
                 .status(HttpStatus.FORBIDDEN.value())

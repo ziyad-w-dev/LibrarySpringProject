@@ -50,7 +50,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResponse findUserById(Long id){
         User user =  userRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException("User Not Found With id: "+ id));
+                .orElseThrow(() -> new UserNotFoundException("User not found with id: " + id));
         UserResponse userResponse = userMapper.toDto(user);
 
         return userResponse;
@@ -66,7 +66,7 @@ public class UserServiceImpl implements UserService {
         }
 
         User realUser = userRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException("User Not Found With id: " +id));
+                .orElseThrow(() -> new UserNotFoundException("User not found with id: " + id));
         if(request.getEmail() != null){
             if(!realUser.getEmail().equals(request.getEmail()) && userRepository.existsByEmail(request.getEmail())){
                 throw new EmailAlreadyExistsException("Email Already Exists!");
@@ -89,7 +89,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteUser(Long id){
         if(!userRepository.existsById(id)){
-            throw new UserNotFoundException("User Not Found With id:" +id);
+            throw new UserNotFoundException("User not found with id: " + id);
         }
         userRepository.deleteById(id);
     }
@@ -98,7 +98,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void promoteToAdmin(Long id){
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException("User Not found with id: "+ id));
+                .orElseThrow(() -> new UserNotFoundException("User not found with id: " + id));
         user.setRole(Role.ADMIN);
         userRepository.save(user);
     }

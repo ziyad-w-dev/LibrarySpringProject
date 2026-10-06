@@ -23,24 +23,24 @@ public class AuthorController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<AuthorResponse> getAuthor(@PathVariable Long id){
         AuthorResponse response = authorService.findAuthorById(id);
 
         return ResponseEntity.ok(response);
     }
 
-    @PutMapping("{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<AuthorResponse> updateAuthor(
             @PathVariable Long id,
             @Valid @RequestBody AuthorRequest request){
 
-        AuthorResponse response = authorService.AuthorUpdate(id,request);
+        AuthorResponse response = authorService.updateAuthor(id,request);
 
         return ResponseEntity.ok(response);
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteAuthor(@PathVariable Long id){
         authorService.deleteAuthor(id);
 

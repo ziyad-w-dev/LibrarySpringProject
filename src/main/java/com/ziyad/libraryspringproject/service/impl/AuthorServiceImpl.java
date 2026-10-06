@@ -2,7 +2,6 @@ package com.ziyad.libraryspringproject.service.impl;
 
 import com.ziyad.libraryspringproject.domain.dto.AuthorRequest;
 import com.ziyad.libraryspringproject.domain.dto.AuthorResponse;
-import com.ziyad.libraryspringproject.domain.dto.BookRequest;
 import com.ziyad.libraryspringproject.domain.entity.Author;
 import com.ziyad.libraryspringproject.exceptions.AuthorHasBooksException;
 import com.ziyad.libraryspringproject.exceptions.AuthorNotFoundException;
@@ -36,7 +35,7 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public AuthorResponse findAuthorById(Long id){
         Author author = authorRepository.findById(id)
-                .orElseThrow(() -> new AuthorNotFoundException("Author Not Found With id: " + id));
+                .orElseThrow(() -> new AuthorNotFoundException("Author not found with id: " + id));
         AuthorResponse authorResponse = authorMapper.toDto(author);
 
         return authorResponse;
@@ -44,9 +43,9 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Transactional
     @Override
-    public AuthorResponse AuthorUpdate(Long id, AuthorRequest request){
+    public AuthorResponse updateAuthor(Long id, AuthorRequest request){
         Author author = authorRepository.findById(id)
-                .orElseThrow(() -> new AuthorNotFoundException("Author Not Found With id: "+ id));
+                .orElseThrow(() -> new AuthorNotFoundException("Author not found with id: " + id));
         author.setName(request.getName());
         Author savedAuthor = authorRepository.save(author);
         AuthorResponse authorResponse = authorMapper.toDto(savedAuthor);
@@ -58,10 +57,10 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public void deleteAuthor(Long id){
         if(!authorRepository.existsById(id)){
-            throw new AuthorNotFoundException("Author Not Found With id: "+id);
+            throw new AuthorNotFoundException("Author not found with id: " + id);
         }
         if(bookRepository.existsByAuthorId(id)){
-            throw new AuthorHasBooksException("Author have books");
+            throw new AuthorHasBooksException("Author has books");
         }
         authorRepository.deleteById(id);
     }

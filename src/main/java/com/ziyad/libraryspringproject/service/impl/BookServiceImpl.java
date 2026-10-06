@@ -32,7 +32,7 @@ public class BookServiceImpl implements BookService {
     @Override
     public BookResponse createBook(BookRequest bookRequest){
         Author author = authorRepository.findById(bookRequest.getAuthorId())
-                .orElseThrow(() -> new AuthorNotFoundException("author not found with id:"+ bookRequest.getAuthorId()));
+                .orElseThrow(() -> new AuthorNotFoundException("Author not found with id: " + bookRequest.getAuthorId()));
         Book bookEntity = bookMapper.toEntity(bookRequest, author);
         Book savedBook =  bookRepository.save(bookEntity);
         BookResponse bookResponse = bookMapper.toDto(savedBook);
@@ -42,8 +42,8 @@ public class BookServiceImpl implements BookService {
     @Transactional(readOnly = true)
     @Override
     public BookResponse findByBookId(Long id){
-        Book book = bookRepository.findById(id).
-                orElseThrow(() -> new BookNotFoundException("Book Not Found With id: " + id ));
+        Book book = bookRepository.findById(id)
+                .orElseThrow(() -> new BookNotFoundException("Book not found with id: " + id ));
         BookResponse bookResponse = bookMapper.toDto(book);
 
         return bookResponse;
@@ -70,7 +70,7 @@ public class BookServiceImpl implements BookService {
 
     @Transactional
     @Override
-    public BookResponse partialUpdateBook (Long id,PartialUpdateBookRequest request) {
+    public BookResponse partialUpdateBook(Long id,PartialUpdateBookRequest request) {
         Book realBook  = bookRepository.findById(id)
                 .orElseThrow(() -> new BookNotFoundException("Book not found with id: " + id));
         if(request.getName() != null){
@@ -81,7 +81,7 @@ public class BookServiceImpl implements BookService {
         }
         if (request.getAuthorId() != null){
             Author author = authorRepository.findById(request.getAuthorId())
-                    .orElseThrow(() -> new AuthorNotFoundException("Author not Found with id: " + request.getAuthorId()));
+                    .orElseThrow(() -> new AuthorNotFoundException("Author not found with id: " + request.getAuthorId()));
             realBook.setAuthor(author);
         }
         Book savedBook = bookRepository.save(realBook);
@@ -93,9 +93,9 @@ public class BookServiceImpl implements BookService {
     @Override
     public BookResponse fullBookUpdate(Long id, BookRequest bookRequest){
         bookRepository.findById(id)
-                .orElseThrow(() -> new BookNotFoundException("Book Not Found with id: "+ id));
+                .orElseThrow(() -> new BookNotFoundException("Book not found with id: " + id));
         Author author = authorRepository.findById(bookRequest.getAuthorId())
-                .orElseThrow(() -> new AuthorNotFoundException("Author Not Found with id: "+ bookRequest.getAuthorId()));
+                .orElseThrow(() -> new AuthorNotFoundException("Author not found with id: " + bookRequest.getAuthorId()));
         Book realBook = bookMapper.toEntity(bookRequest, author);
         realBook.setId(id);
         Book savedBook = bookRepository.save(realBook);
@@ -108,7 +108,7 @@ public class BookServiceImpl implements BookService {
     @Override
     public void deleteBook(Long id){
         if(!bookRepository.existsById(id)) {
-            throw new BookNotFoundException("Book Not Found With id: " + id);
+            throw new BookNotFoundException("Book not found with id: " + id);
         }
         bookRepository.deleteById(id);
     }
