@@ -22,7 +22,7 @@ public class SecurityConfig {
     private final JwtFilter jwtFilter;
 
     @Bean
-    public PasswordEncoder passwordEncoder (){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
@@ -31,8 +31,8 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth ->
-                        auth.requestMatchers(HttpMethod.POST,"/api/users", "/api/auth/login").permitAll()
-                                .requestMatchers(HttpMethod.DELETE, "/api/books/**", "/api/authors/**","/api/users/**").hasRole("ADMIN")
+                        auth.requestMatchers(HttpMethod.POST, "/api/users", "/api/auth/login").permitAll()
+                                .requestMatchers(HttpMethod.DELETE, "/api/books/**", "/api/authors/**", "/api/users/**").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.PATCH, "/api/books/**", "/api/users/*/role").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.PUT, "/api/books/**", "/api/authors/**").hasRole("ADMIN")
                                 .anyRequest().authenticated())
